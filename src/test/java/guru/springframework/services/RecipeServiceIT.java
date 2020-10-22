@@ -20,10 +20,8 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by jt on 6/21/17.
  */
-@Ignore
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@DataMongoTest
 public class RecipeServiceIT {
 
     public static final String NEW_DESCRIPTION = "New Description";
@@ -40,16 +38,15 @@ public class RecipeServiceIT {
     @Autowired
     RecipeToRecipeCommand recipeToRecipeCommand;
 
-    @Transactional
+    //  @Transactional
     @Test
-    public void testSaveOfDescription() {
+    public void testSaveOfDescription() throws Exception {
         //given
         Iterable<Recipe> recipes = recipeRepository.findAll();
         Recipe testRecipe = recipes.iterator().next();
         RecipeCommand testRecipeCommand = recipeToRecipeCommand.convert(testRecipe);
 
         //when
-        assert testRecipeCommand != null;
         testRecipeCommand.setDescription(NEW_DESCRIPTION);
         RecipeCommand savedRecipeCommand = recipeService.saveRecipeCommand(testRecipeCommand);
 
