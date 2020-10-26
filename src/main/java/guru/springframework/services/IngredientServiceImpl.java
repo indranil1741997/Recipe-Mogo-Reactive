@@ -147,13 +147,12 @@ public class IngredientServiceImpl implements IngredientService {
 
         log.debug("Deleting ingredient: " + recipeId + ":" + idToDelete);
 
-        Recipe recipe = recipeRepository.findById(recipeId).get();
-
-        if(recipe != null){
+        Recipe recipeReactive = recipeReactiveRepository.findById(recipeId).block();
+        if(recipeReactive != null){
 
             log.debug("found recipe");
 
-            Optional<Ingredient> ingredientOptional = recipe
+            Optional<Ingredient> ingredientOptional = recipeReactive
                     .getIngredients()
                     .stream()
                     .filter(ingredient -> ingredient.getId().equals(idToDelete))
@@ -162,8 +161,8 @@ public class IngredientServiceImpl implements IngredientService {
             if(ingredientOptional.isPresent()){
                 log.debug("found Ingredient");
 
-                recipe.getIngredients().remove(ingredientOptional.get());
-                recipeRepository.save(recipe);
+                recipeReactive.getIngredients().remove(ingredientOptional.get());
+                recipeReactiveRepository.save(recipeReactive).block();
             }
         } else {
             log.debug("Recipe Id Not found. Id:" + recipeId);
