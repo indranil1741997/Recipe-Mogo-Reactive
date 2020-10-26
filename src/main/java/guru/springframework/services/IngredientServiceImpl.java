@@ -162,7 +162,7 @@ public class IngredientServiceImpl implements IngredientService {
                 log.debug("found Ingredient");
 
                 recipeReactive.getIngredients().remove(ingredientOptional.get());
-                recipeReactiveRepository.save(recipeReactive).block();
+                recipeReactiveRepository.save(recipeReactive);
             }
         } else {
             log.debug("Recipe Id Not found. Id:" + recipeId);
